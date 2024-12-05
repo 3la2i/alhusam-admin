@@ -10,7 +10,11 @@ const driverOrderController = {
       })
       .populate('user', 'username email')
       .populate('provider', 'fullName email phoneNumber address')
-      .populate('items.product', 'title titleAr price')
+      .populate({
+        path: 'items.product',
+        select: 'title titleAr price mainImage',
+        match: { isDeleted: false }
+      })
       .sort({ createdAt: -1 });
       
       res.json(orders);
@@ -30,7 +34,11 @@ const driverOrderController = {
       })
       .populate('user', 'username email')
       .populate('provider', 'fullName email phoneNumber address')
-      .populate('items.product', 'title titleAr price')
+      .populate({
+        path: 'items.product',
+        select: 'title titleAr price mainImage',
+        match: { isDeleted: false }
+      })
       .sort({ createdAt: -1 });
 
       res.json(activeOrders);
