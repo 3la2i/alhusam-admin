@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -35,13 +34,11 @@ const orderSchema = new Schema({
     },
     platformProfit: { 
         type: Number, 
-        required: true, 
-        default: 0, 
+        required: true 
     },
     providerProfit: { 
         type: Number, 
-        required: true, 
-        default: 0, 
+        required: true 
     },
     driverStatus: { 
         type: String, 
@@ -75,6 +72,17 @@ const orderSchema = new Schema({
     }
 }, {
     timestamps: true  // This will add createdAt and updatedAt automatically
+});
+
+// Add a pre-save middleware to calculate profits if not set
+orderSchema.pre('save', function(next) {
+    if (!this.platformProfit || !this.providerProfit) {
+        // Platform takes 10% of the total
+        this.platformProfit = Math.round(this.total * 0.10);
+        // Provider gets 90% of the total
+        this.providerProfit = this.total - this.platformProfit;
+    }
+    next();
 });
 
 module.exports = mongoose.model('Order', orderSchema);

@@ -6,6 +6,7 @@ import ProviderApplications from './components/ProviderApplications'
 import Testimonials from './components/Testimonials'
 import Requests from './components/Requests'
 import Overview from './components/Overview'
+import ProviderStats from './components/ProviderStats'
 
 function Admin({ setIsAuthenticated }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
@@ -92,6 +93,15 @@ function Admin({ setIsAuthenticated }) {
         </svg>
       ),
     },
+    {
+      id: 'provider-stats',
+      name: 'Provider Statistics',
+      icon: (
+        <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      ),
+    },
   ]
 
   return (
@@ -175,6 +185,7 @@ function Admin({ setIsAuthenticated }) {
             {currentPage === 'messages' && <Messages />}
             {currentPage === 'testimonials' && <Testimonials />}
             {currentPage === 'requests' && <Requests />}
+            {currentPage === 'provider-stats' && <ProviderStats />}
           </div>
         </div>
       </div>
