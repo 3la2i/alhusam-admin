@@ -5,10 +5,11 @@ import Messages from './components/Messages'
 import ProviderApplications from './components/ProviderApplications'
 import Testimonials from './components/Testimonials'
 import Requests from './components/Requests'
+import Overview from './components/Overview'
 
 function Admin({ setIsAuthenticated }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-  const [currentPage, setCurrentPage] = useState('users')
+  const [currentPage, setCurrentPage] = useState('overview')
   const navigate = useNavigate()
 
   const handleLogout = async () => {
@@ -35,6 +36,17 @@ function Admin({ setIsAuthenticated }) {
   };
 
   const navigationItems = [
+    {
+      id: 'overview',
+      name: 'Overview',
+      icon: (
+        <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+            d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" 
+          />
+        </svg>
+      ),
+    },
     {
       id: 'users',
       name: 'Users',
@@ -157,6 +169,7 @@ function Admin({ setIsAuthenticated }) {
         {/* Page Content */}
         <div className="p-4">
           <div className="bg-white rounded-lg shadow">
+            {currentPage === 'overview' && <Overview />}
             {currentPage === 'users' && <Users />}
             {currentPage === 'providers' && <ProviderApplications />}
             {currentPage === 'messages' && <Messages />}

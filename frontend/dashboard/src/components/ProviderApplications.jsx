@@ -6,6 +6,8 @@ function ProviderApplications() {
   const [searchTerm, setSearchTerm] = useState("")
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     fetchApplications()
@@ -132,6 +134,16 @@ function ProviderApplications() {
     }
   }
 
+  const handleProductClick = (product) => {
+    setSelectedProduct(product)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setSelectedProduct(null)
+    setIsModalOpen(false)
+  }
+
   if (loading) return (
     <div className="min-h-[400px] flex items-center justify-center">
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
@@ -251,13 +263,17 @@ function ProviderApplications() {
                 </div>
               </div>
 
-              {/* Add Products Section */}
+              {/* Products Section */}
               {application.status === 'مقبول' && providerProducts[application.userId._id] && (
                 <div className="mt-6 pt-6 border-t border-gray-100">
                   <h4 className="text-sm font-medium text-gray-900 mb-4">Provider Products</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {providerProducts[application.userId._id].map((product) => (
-                      <div key={product._id} className="bg-gray-50 rounded-lg p-4">
+                      <div 
+                        key={product._id} 
+                        className="bg-gray-50 rounded-lg p-4 cursor-pointer transform transition-transform hover:scale-105"
+                        onClick={() => handleProductClick(product)}
+                      >
                         <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 mb-4">
                           <img
                             src={product.mainImage}
@@ -336,6 +352,131 @@ function ProviderApplications() {
           </div>
         )}
       </div>
+
+      {/* Product Details Modal */}
+      {isModalOpen && selectedProduct && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <h3 className="text-xl font-bold text-gray-900">Product Details</h3>
+                <button
+                  onClick={handleCloseModal}
+                  className="text-gray-400 hover:text-gray-500"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Product Images */}
+                <div className="space-y-4">
+                  <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200">
+                    <img
+                      src={selectedProduct.mainImage}
+                      alt={selectedProduct.title}
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+                  {selectedProduct.additionalImages?.length > 0 && (
+                    <div className="grid grid-cols-4 gap-2">
+                      {selectedProduct.additionalImages.map((image, index) => (
+                        <div key={index} className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200">
+                          <img
+                            src={image}
+                            alt={`Additional ${index + 1}`}
+                            className="h-full w-full object-cover object-center"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Product Information */}
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-lg font-medium text-gray-900">{selectedProduct.title}</h4>
+                    <p className="text-sm text-gray-600">{selectedProduct.titleAr}</p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Category:</span> {selectedProduct.category}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Price:</span> ${selectedProduct.price}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Stock:</span> {selectedProduct.stock} units
+                    </p>
+                    {selectedProduct.size && (
+                      <p className="text-sm text-gray-600">
+                        <span className="font-medium">Size:</span> {selectedProduct.size}
+                      </p>
+                    )}
+                    {selectedProduct.color && (
+                      <p className="text-sm text-gray-600">
+                        <span className="font-medium">Color:</span> {selectedProduct.color}
+                      </p>
+                    )}
+                    {selectedProduct.material && (
+                      <p className="text-sm text-gray-600">
+                        <span className="font-medium">Material:</span> {selectedProduct.material}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <h5 className="font-medium text-gray-900">Description</h5>
+                    <p className="text-sm text-gray-600">{selectedProduct.description}</p>
+                  </div>
+
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center">
+                      <span className="text-sm font-medium text-gray-900 mr-2">Rating:</span>
+                      <div className="flex items-center">
+                        <span className="text-yellow-400 mr-1">★</span>
+                        <span className="text-sm text-gray-600">{selectedProduct.averageRating.toFixed(1)}</span>
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      <span className="font-medium">Views:</span> {selectedProduct.views}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      <span className="font-medium">Purchases:</span> {selectedProduct.purchaseCount}
+                    </div>
+                  </div>
+
+                  {selectedProduct.reviews?.length > 0 && (
+                    <div className="space-y-2">
+                      <h5 className="font-medium text-gray-900">Recent Reviews</h5>
+                      <div className="space-y-3">
+                        {selectedProduct.reviews.slice(0, 3).map((review, index) => (
+                          <div key={index} className="bg-gray-50 p-3 rounded-lg">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center">
+                                <span className="text-yellow-400 mr-1">★</span>
+                                <span className="text-sm text-gray-600">{review.rating}</span>
+                              </div>
+                              <span className="text-xs text-gray-500">
+                                {new Date(review.createdAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-600 mt-1">{review.comment}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

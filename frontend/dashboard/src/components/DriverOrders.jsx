@@ -104,6 +104,151 @@ function DriverOrders() {
     }
   };
 
+  const OrderCard = ({ order, isActive = false }) => (
+    <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-100">
+      {/* Header Section */}
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <h3 className="font-semibold text-lg">Order #{order._id.slice(-6)}</h3>
+          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+            isActive ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+          }`}>
+            {order.driverStatus}
+          </span>
+        </div>
+        <div className="text-right">
+          <p className="text-lg font-bold text-primary-600">${order.total}</p>
+          <p className="text-sm text-gray-500">
+            {new Date(order.createdAt).toLocaleString()}
+          </p>
+        </div>
+      </div>
+
+      {/* Customer Information */}
+      <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+        <h4 className="font-medium text-gray-900 mb-2">Customer Information</h4>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <p className="text-sm text-gray-600">Name</p>
+            <p className="font-medium">{order.firstName} {order.lastName}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Phone</p>
+            <p className="font-medium">{order.phone}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Email</p>
+            <p className="font-medium">{order.email}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Payment Method</p>
+            <p className="font-medium capitalize">{order.paymentMethod}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Delivery Address */}
+      <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+        <h4 className="font-medium text-gray-900 mb-2">Delivery Address</h4>
+        <p className="text-gray-800">
+          {order.deliveryAddress.street},<br />
+          {order.deliveryAddress.city}, {order.deliveryAddress.state} {order.deliveryAddress.zipCode}
+        </p>
+        {order.info && (
+          <p className="mt-2 text-sm text-gray-600">
+            <span className="font-medium">Additional Info:</span> {order.info}
+          </p>
+        )}
+      </div>
+
+      {/* Order Items */}
+      <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+        <h4 className="font-medium text-gray-900 mb-2">Order Items</h4>
+        <div className="space-y-2">
+          {order.items.map((item, index) => (
+            <div key={index} className="flex justify-between items-center">
+              <div>
+                <p className="font-medium">{item.product.title}</p>
+                <p className="text-sm text-gray-600">
+                  Quantity: {item.quantity} × ${item.price}
+                </p>
+              </div>
+              <p className="font-medium">${item.quantity * item.price}</p>
+            </div>
+          ))}
+          <div className="pt-2 mt-2 border-t border-gray-200">
+            <div className="flex justify-between items-center">
+              <p className="font-medium">Total Amount</p>
+              <p className="font-bold text-primary-600">${order.total}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Provider Information */}
+      <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+        <h4 className="font-medium text-gray-900 mb-2">Provider Information</h4>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <p className="text-sm text-gray-600">Name</p>
+            <p className="font-medium">{order.provider.fullName}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Email</p>
+            <p className="font-medium">{order.provider.email}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Phone</p>
+            <p className="font-medium">{order.provider.phoneNumber}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Status</p>
+            <p className="font-medium capitalize">{order.providerStatus}</p>
+          </div>
+          <div className="col-span-2">
+            <p className="text-sm text-gray-600">Address</p>
+            <p className="font-medium">{order.provider.address}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex justify-end space-x-2">
+        {!isActive && (
+          <button
+            onClick={() => acceptOrder(order._id)}
+            disabled={activeOrders.length >= 1}
+            className={`px-4 py-2 text-white rounded-lg transition-colors ${
+              activeOrders.length >= 1
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-primary-600 hover:bg-primary-700'
+            }`}
+          >
+            Accept Order
+          </button>
+        )}
+        
+        {isActive && order.driverStatus === 'accepted' && (
+          <button
+            onClick={() => updateOrderStatus(order._id, 'on the way')}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Start Delivery
+          </button>
+        )}
+        
+        {isActive && order.driverStatus === 'on the way' && (
+          <button
+            onClick={() => updateOrderStatus(order._id, 'delivered')}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            Complete Delivery
+          </button>
+        )}
+      </div>
+    </div>
+  );
+
   if (loading) {
     return (
       <div className="text-center py-12">
@@ -124,45 +269,12 @@ function DriverOrders() {
     <div className="space-y-8">
       {/* Active Orders */}
       <section>
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Active Order {activeOrders.length}/1</h2>
-        <div className="grid gap-4 md:grid-cols-2">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">
+          Active Order {activeOrders.length}/1
+        </h2>
+        <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1">
           {activeOrders.map((order) => (
-            <div key={order._id} className="bg-white p-6 rounded-lg shadow">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="font-semibold text-lg">Order #{order._id.slice(-6)}</h3>
-                  <p className="text-gray-600">Customer: {order.user.username}</p>
-                </div>
-                <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                  {order.driverStatus}
-                </span>
-              </div>
-              
-              <div className="space-y-2 mb-4">
-                <p className="text-gray-600">Provider: {order.provider.name}</p>
-                <p className="text-gray-600">Total: ${order.total}</p>
-                <p className="text-gray-600">Address: {order.deliveryAddress.street}, {order.deliveryAddress.city}</p>
-              </div>
-
-              <div className="flex justify-end space-x-2">
-                {order.driverStatus === 'accepted' && (
-                  <button
-                    onClick={() => updateOrderStatus(order._id, 'on the way')}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                  >
-                    Start Delivery
-                  </button>
-                )}
-                {order.driverStatus === 'on the way' && (
-                  <button
-                    onClick={() => updateOrderStatus(order._id, 'delivered')}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-                  >
-                    Complete Delivery
-                  </button>
-                )}
-              </div>
-            </div>
+            <OrderCard key={order._id} order={order} isActive={true} />
           ))}
         </div>
       </section>
@@ -170,39 +282,14 @@ function DriverOrders() {
       {/* Available Orders */}
       <section>
         <h2 className="text-xl font-bold text-gray-900 mb-4">Available Orders</h2>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1">
           {availableOrders.map((order) => (
-            <div key={order._id} className="bg-white p-6 rounded-lg shadow">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="font-semibold text-lg">Order #{order._id.slice(-6)}</h3>
-                  <p className="text-gray-600">Customer: {order.user.username}</p>
-                </div>
-              </div>
-              
-              <div className="space-y-2 mb-4">
-                <p className="text-gray-600">Provider: {order.provider.name}</p>
-                <p className="text-gray-600">Total: ${order.total}</p>
-                <p className="text-gray-600">Address: {order.deliveryAddress.street}, {order.deliveryAddress.city}</p>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  onClick={() => acceptOrder(order._id)}
-                  className={`px-4 py-2 text-white rounded-lg transition-colors ${
-                    activeOrders.length >= 1
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-primary-600 hover:bg-primary-700 cursor-pointer'
-                  }`}
-                  disabled={activeOrders.length >= 1}
-                > 
-                  Accept Order
-                </button>
-              </div>
-            </div>
+            <OrderCard key={order._id} order={order} />
           ))}
           {availableOrders.length === 0 && (
-            <p className="text-gray-500 col-span-2 text-center py-8">No available orders at the moment</p>
+            <p className="text-gray-500 text-center py-8">
+              No available orders at the moment
+            </p>
           )}
         </div>
       </section>

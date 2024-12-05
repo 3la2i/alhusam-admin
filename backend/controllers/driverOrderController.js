@@ -9,7 +9,8 @@ const driverOrderController = {
         driver: { $exists: false }
       })
       .populate('user', 'username email')
-      .populate('provider', 'name')
+      .populate('provider', 'fullName email phoneNumber address')
+      .populate('items.product', 'title titleAr price')
       .sort({ createdAt: -1 });
       
       res.json(orders);
@@ -28,7 +29,8 @@ const driverOrderController = {
         driverStatus: { $in: ['accepted', 'ready', 'on the way'] }
       })
       .populate('user', 'username email')
-      .populate('provider', 'name')
+      .populate('provider', 'fullName email phoneNumber address')
+      .populate('items.product', 'title titleAr price')
       .sort({ createdAt: -1 });
 
       res.json(activeOrders);

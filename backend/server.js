@@ -13,6 +13,7 @@ const driverAuthRoutes = require('./routes/driverAuthRoutes');
 const driverOrderRoutes = require('./routes/driverOrderRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const contactMessageRoutes = require('./routes/contactMessageRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -40,6 +41,7 @@ app.use('/api/driver/auth', driverAuthRoutes);                 // Driver auth ro
 app.use('/api/driver/orders', driverOrderRoutes);              // Driver order routes
 app.use('/api/admin/requests', requestRoutes);                 // Request routes
 app.use('/api/admin/contact-messages', contactMessageRoutes);
+app.use('/api/admin/dashboard', dashboardRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, { 

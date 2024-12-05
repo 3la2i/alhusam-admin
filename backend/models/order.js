@@ -1,11 +1,5 @@
 
-
-
-
-
-
-
-  const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
@@ -34,11 +28,20 @@ const orderSchema = new Schema({
             type: Number,
             required: true 
         },
- 
     }],
     total: { 
         type: Number, 
         required: true 
+    },
+    platformProfit: { 
+        type: Number, 
+        required: true, 
+        default: 0, 
+    },
+    providerProfit: { 
+        type: Number, 
+        required: true, 
+        default: 0, 
     },
     driverStatus: { 
         type: String, 
@@ -75,8 +78,3 @@ const orderSchema = new Schema({
 });
 
 module.exports = mongoose.model('Order', orderSchema);
-
-
-
-
-
