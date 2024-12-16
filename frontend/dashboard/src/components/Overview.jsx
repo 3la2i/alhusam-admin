@@ -159,16 +159,16 @@ function Overview() {
         <div className="bg-white p-6 rounded-xl shadow-soft border border-gray-100">
           <h3 className="text-lg font-medium text-gray-900 mb-4">Products by Category</h3>
           <div className="h-[300px] flex items-center justify-center">
-            <Bar 
-              data={productCategoryChartData} 
-              options={{ 
+            <Bar
+              data={productCategoryChartData}
+              options={{
                 maintainAspectRatio: false,
                 scales: {
                   y: {
                     beginAtZero: true
                   }
                 }
-              }} 
+              }}
             />
           </div>
         </div>
@@ -202,7 +202,7 @@ function Overview() {
                     {order.user.username}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.provider.fullName}
+                    {/* {order.provider.fullName} */}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {order.driver ? (

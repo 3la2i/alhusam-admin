@@ -197,15 +197,15 @@ function DriverOrders() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <p className="text-sm text-gray-600">Name</p>
-              <p className="font-medium">{order.provider.fullName}</p>
+              {/* <p className="font-medium">{order.provider.fullName}</p>/ */}
             </div>
             <div>
               <p className="text-sm text-gray-600">Email</p>
-              <p className="font-medium">{order.provider.email}</p>
+              {/* <p className="font-medium">{order.provider.email}</p> */}
             </div>
             <div>
               <p className="text-sm text-gray-600">Phone</p>
-              <p className="font-medium">{order.provider.phoneNumber}</p>
+              {/* <p className="font-medium">{order.provider.phoneNumber}</p> */}
             </div>
             <div>
               <p className="text-sm text-gray-600">Status</p>
@@ -213,7 +213,7 @@ function DriverOrders() {
             </div>
             <div className="col-span-2">
               <p className="text-sm text-gray-600">Address</p>
-              <p className="font-medium">{order.provider.address}</p>
+              {/* <p className="font-medium">{order.provider.address}</p> */}
             </div>
           </div>
         </div>
@@ -233,7 +233,7 @@ function DriverOrders() {
               Accept Order
             </button>
           )}
-          
+
           {isActive && order.driverStatus === 'accepted' && (
             <button
               onClick={() => updateOrderStatus(order._id, 'on the way')}
@@ -242,7 +242,7 @@ function DriverOrders() {
               Start Delivery
             </button>
           )}
-          
+
           {isActive && order.driverStatus === 'on the way' && (
             <button
               onClick={() => updateOrderStatus(order._id, 'delivered')}
@@ -304,4 +304,4 @@ function DriverOrders() {
   );
 }
 
-export default DriverOrders; 
+export default DriverOrders;
