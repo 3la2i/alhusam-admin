@@ -197,15 +197,18 @@ function DriverOrders() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <p className="text-sm text-gray-600">Name</p>
-              {/* <p className="font-medium">{order.provider.fullName}</p>/ */}
+              <p className="font-medium">{order.provider && order.provider.fullName ? order.provider.fullName : "No fullName provided"}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Email</p>
-              {/* <p className="font-medium">{order.provider.email}</p> */}
-            </div>
+              <p className="font-medium">
+  {order.provider && order.provider.email ? order.provider.email : "No email provided"}
+</p>            </div>
             <div>
               <p className="text-sm text-gray-600">Phone</p>
-              {/* <p className="font-medium">{order.provider.phoneNumber}</p> */}
+              <p className="font-medium">
+  {order.provider && order.provider.phoneNumber ? order.provider.phoneNumber : "No phoneNumber provided"}
+</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Status</p>
@@ -213,8 +216,9 @@ function DriverOrders() {
             </div>
             <div className="col-span-2">
               <p className="text-sm text-gray-600">Address</p>
-              {/* <p className="font-medium">{order.provider.address}</p> */}
-            </div>
+              <p className="font-medium">
+  {order.provider && order.provider.address ? order.provider.address : "No address provided"}
+</p>            </div>
           </div>
         </div>
 

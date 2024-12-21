@@ -19,7 +19,7 @@ const userSchema = new Schema(
     facebookId: { type: String },
     isDeleted: { type: Boolean, default: false },
     isActivated: { type: Boolean, default: false }, // Default to false
-    otp: String, 
+    otp: String,
     otpExpiry: Date,
   },
   { timestamps: true }

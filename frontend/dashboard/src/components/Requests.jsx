@@ -19,7 +19,7 @@ function Requests() {
       if (!response.ok) {
         throw new Error('Failed to fetch requests');
       }
-      
+
       const data = await response.json();
       setRequests(data);
     } catch (err) {
@@ -42,13 +42,13 @@ function Requests() {
           body: JSON.stringify({ status: newStatus }),
         }
       );
-      
+
       if (!response.ok) {
         throw new Error('Failed to update status');
       }
-      
+
       const updatedRequest = await response.json();
-      setRequests(requests.map(req => 
+      setRequests(requests.map(req =>
         req._id === requestId ? updatedRequest : req
       ));
     } catch (err) {
@@ -60,7 +60,7 @@ function Requests() {
     window.location.href = `mailto:${email}?subject=Re: ${subject}`
   }
 
-  const filteredRequests = requests.filter(request => 
+  const filteredRequests = requests.filter(request =>
     request.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     request.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     request.subject?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -100,7 +100,7 @@ function Requests() {
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
     </div>
   )
-  
+
   if (error) return (
     <div className="min-h-[400px] flex items-center justify-center">
       <div className="bg-red-50 text-red-800 rounded-lg p-4 flex items-center space-x-2">
@@ -164,13 +164,20 @@ function Requests() {
                       <span className="text-sm font-medium">{request.status}</span>
                     </span>
                   </div>
-                  
+
                   <div className="mb-4">
                     <p className="text-sm text-gray-600">{request.name}</p>
                     <p className="text-sm text-gray-600">{request.email}</p>
-                    <time className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-600">{request.phoneNumber}</p>
+                    <p className="text-sm text-gray-600">
+  {new Date(request.submissionDate).toLocaleDateString('ar-EG', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })}
+</p>          {/* <time className="text-sm text-gray-500">
                       {new Date(request.createdAt).toLocaleDateString()}
-                    </time>
+                    </time> */}
                   </div>
 
                   <div className="bg-gray-50 p-4 rounded-lg mb-4">
@@ -235,4 +242,4 @@ function Requests() {
   )
 }
 
-export default Requests 
+export default Requests

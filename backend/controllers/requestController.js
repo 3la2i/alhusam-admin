@@ -5,7 +5,7 @@ const requestController = {
     try {
       const requests = await Request.find()
         .sort({ createdAt: -1 });
-      
+
       res.json(requests);
     } catch (error) {
       console.error('Error fetching requests:', error);
@@ -17,7 +17,7 @@ const requestController = {
     try {
       const { requestId } = req.params;
       const { status } = req.body;
-      
+
       const request = await Request.findByIdAndUpdate(
         requestId,
         { status },

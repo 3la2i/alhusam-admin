@@ -1,23 +1,42 @@
 const Order = require('../models/order');
+const ProviderApplication = require('../models/providerApplication');
 
 const driverOrderController = {
   // Get all available orders (pending status)
   getAvailableOrders: async (req, res) => {
     try {
-      const orders = await Order.find({ 
+      // Fetch orders with the specified conditions and populate necessary fields
+      const orders = await Order.find({
         driverStatus: 'pending',
+        providerStatus: 'ready',
         driver: { $exists: false }
       })
       .populate('user', 'username email')
-      .populate('provider', 'fullName email phoneNumber address')
+      // .populate('provider', 'fullName email phoneNumber address')
       .populate({
         path: 'items.product',
         select: 'title titleAr price mainImage',
         match: { isDeleted: false }
       })
       .sort({ createdAt: -1 });
-      
-      res.json(orders);
+
+      // Fetch provider details for each order
+      const ordersWithProviders = await Promise.all(
+        orders.map(async (order) => {
+          const provider = await ProviderApplication.findOne({
+            userId: order.provider, // Match provider in Order with userId in ProviderApplication
+          }).select("email fullName phoneNumber address");
+
+          return {
+            ...order.toObject(),
+            provider, // Attach the fetched provider data to the order
+          };
+        })
+      );
+
+      // Send the populated orders with provider data
+      console.log(ordersWithProviders);
+      res.status(200).json(ordersWithProviders);
     } catch (error) {
       console.error('Error fetching available orders:', error);
       res.status(500).json({ message: 'Error fetching orders' });
@@ -33,7 +52,7 @@ const driverOrderController = {
         driverStatus: { $in: ['accepted', 'ready', 'on the way'] }
       })
       .populate('user', 'username email')
-      .populate('provider', 'fullName email phoneNumber address')
+
       .populate({
         path: 'items.product',
         select: 'title titleAr price mainImage',
@@ -41,7 +60,23 @@ const driverOrderController = {
       })
       .sort({ createdAt: -1 });
 
-      res.json(activeOrders);
+      // Fetch provider details for each order
+      const ordersWithProviders = await Promise.all(
+        activeOrders.map(async (order) => {
+          const provider = await ProviderApplication.findOne({
+            userId: order.provider, // Match provider in Order with userId in ProviderApplication
+          }).select("email fullName phoneNumber address");
+
+          return {
+            ...order.toObject(),
+            provider, // Attach the fetched provider data to the order
+          };
+        })
+      );
+
+      // Send the populated orders with provider data
+      console.log(ordersWithProviders);
+      res.status(200).json(ordersWithProviders);
     } catch (error) {
       console.error('Error fetching active orders:', error);
       res.status(500).json({ message: 'Error fetching active orders' });
@@ -61,18 +96,18 @@ const driverOrderController = {
       });
 
       if (activeOrdersCount >= 1) {
-        return res.status(400).json({ 
-          message: 'Cannot accept more than 1 active order' 
+        return res.status(400).json({
+          message: 'Cannot accept more than 1 active order'
         });
       }
 
       const order = await Order.findOneAndUpdate(
-        { 
+        {
           _id: orderId,
           driverStatus: 'pending',
           driver: { $exists: false }
         },
-        { 
+        {
           driver: driverId,
           driverStatus: 'accepted'
         },
@@ -80,8 +115,8 @@ const driverOrderController = {
       );
 
       if (!order) {
-        return res.status(404).json({ 
-          message: 'Order not found or already taken' 
+        return res.status(404).json({
+          message: 'Order not found or already taken'
         });
       }
 
@@ -100,7 +135,7 @@ const driverOrderController = {
       const { status } = req.body;
 
       const order = await Order.findOneAndUpdate(
-        { 
+        {
           _id: orderId,
           driver: driverId
         },

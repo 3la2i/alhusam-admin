@@ -222,8 +222,8 @@ function Overview() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      order.providerStatus === 'ready' 
-                        ? 'bg-green-100 text-green-800' 
+                      order.providerStatus === 'ready'
+                        ? 'bg-green-100 text-green-800'
                         : order.providerStatus === 'preparing'
                         ? 'bg-yellow-100 text-yellow-800'
                         : 'bg-gray-100 text-gray-800'
@@ -233,7 +233,7 @@ function Overview() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      order.driverStatus === 'delivered' 
+                      order.driverStatus === 'delivered'
                         ? 'bg-green-100 text-green-800'
                         : order.driverStatus === 'on the way'
                         ? 'bg-blue-100 text-blue-800'

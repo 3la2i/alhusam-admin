@@ -10,7 +10,7 @@ const dashboardController = {
       const usersCount = await User.countDocuments({ isDeleted: false });
       const providersCount = await ProviderApplication.countDocuments({ status: 'مقبول' });
       const productsCount = await Product.countDocuments({ isDeleted: false });
-      
+
       // Get users by role
       const usersByRole = await User.aggregate([
         { $match: { isDeleted: false } },
@@ -119,4 +119,4 @@ const dashboardController = {
   }
 };
 
-module.exports = dashboardController; 
+module.exports = dashboardController;
