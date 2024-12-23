@@ -24,11 +24,11 @@ function ProviderApplications() {
       const response = await fetch('http://localhost:4000/api/admin/provider-applications', {
         credentials: 'include'
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch applications');
       }
-      
+
       const data = await response.json();
       setApplications(data);
     } catch (err) {
@@ -269,7 +269,7 @@ function ProviderApplications() {
                   <h4 className="text-sm font-medium text-gray-900 mb-4">Provider Products</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {providerProducts[application.userId._id].map((product) => (
-                      <div 
+                      <div
                         key={product._id} 
                         className="bg-gray-50 rounded-lg p-4 cursor-pointer transform transition-transform hover:scale-105"
                         onClick={() => handleProductClick(product)}

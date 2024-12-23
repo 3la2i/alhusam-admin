@@ -7,11 +7,11 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     console.log('Login attempt for:', email);
 
-    const user = await User.findOne({ email });
-    
+    const user = await User.findOne({ email, isDeleted: false, isActivated: true });
+
     if (!user) {
       console.log('User not found:', email);
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Invalid email or password or your account is not active ' });
     }
 
     if (!['admin', 'driver'].includes(user.role)) {
@@ -67,4 +67,4 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = { login, logout }; 
+module.exports = { login, logout };

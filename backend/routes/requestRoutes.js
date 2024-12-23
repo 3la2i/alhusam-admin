@@ -7,4 +7,4 @@ const { adminAuth } = require('../middleware/authMiddleware');
 router.get('/', adminAuth, requestController.getAllRequests);
 router.patch('/:requestId/status', adminAuth, requestController.updateRequestStatus);
 
-module.exports = router; 
+module.exports = router;

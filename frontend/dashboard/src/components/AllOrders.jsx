@@ -155,9 +155,10 @@ const AllOrders = () => {
                 <th scope="col" className="py-3 px-6">Products</th>
                 <th scope="col" className="py-3 px-6">Total</th>
                 <th scope="col" className="py-3 px-6">Delivery Address</th>
-                <th scope="col" className="py-3 px-6">Payment Method</th>
                 <th scope="col" className="py-3 px-6">Platform Profit</th>
                 <th scope="col" className="py-3 px-6">Provider Profit</th>
+
+                <th scope="col" className="py-3 px-6">Payment Method</th>
                 <th scope="col" className="py-3 px-6">Date</th>
                 <th scope="col" className="py-3 px-6">Driver</th>
                 <th scope="col" className="py-3 px-6">Status</th>
@@ -169,8 +170,11 @@ const AllOrders = () => {
                 <tr key={order._id} className="border-b hover:bg-gray-50">
                   <td className="py-4 px-6 text-gray-800 font-medium">{order._id}</td>
                   <td className="py-4 px-6">
-                    {order.user?.username || <span className="italic text-gray-400">N/A</span>}/
+                    {order.user?._id || <span className="italic text-gray-400">N/A</span>} <br />
+                    {order.user?.username || <span className="italic text-gray-400">N/A</span>} <br />
                     {order.user?.email || <span className="italic text-gray-400">N/A</span>}
+
+
                   </td>
                   <td className="py-4 px-6">
                   {order.provider?.fullName || <span className="italic text-gray-400">N/A</span>}
@@ -179,10 +183,19 @@ const AllOrders = () => {
                   <br />
 
                     {order.provider?.email || <span className="italic text-gray-400">N/A</span>}
+
+                    <br />
+                    provider as user....... <br />
+                    {order.providerUser?._id || <span className="italic text-gray-400">N/A</span>} <br />
+                    {order.providerUser?.email || <span className="italic text-gray-400">N/A</span>} <br />
+                    {order.providerUser?.username || <span className="italic text-gray-400">N/A</span>}
+
+
                   </td>
                   <td className="py-4 px-6">
                     {order.items.map((item, index) => (
                       <div key={index} className="flex items-center gap-2">
+                        <div className="font-semibold text-gray-700">ID:{item.product?._id || "Unknown"}</div><br />
                         <span className="font-semibold text-gray-700">Title:{item.product?.titleAr || "Unknown"}</span>
                         <br />
 
@@ -245,8 +258,13 @@ const AllOrders = () => {
       </td>
 
       <td className="py-4 px-6">
+        Driver as user
                     <span className="block text-blue-600 font-medium">
-                      Driver: {order.driver? `${order.driver.username} (${order.driver.email})` : "No driver assigned"}
+                    ID: {order.driver? `${order.driver._id}  Name: ${order.driver.username} Email: (${order.driver.email})` : "No driver assigned"}
+                    </span>
+...... Driver Request
+                    <span className="block text-blue-600 font-medium">
+                      Driver: {order.driverDetails? `${order.driverDetails.name} ${order.driverDetails.email} (${order.driverDetails.phoneNumber})` : "No driver assigned"}
                     </span>
 
                   </td>
