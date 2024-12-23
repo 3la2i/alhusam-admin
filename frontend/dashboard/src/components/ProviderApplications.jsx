@@ -211,6 +211,13 @@ function ProviderApplications() {
                           Role: <span className="font-medium">{application.userId?.role || 'user'}</span>
                         </p>
                       </div>
+
+                      <div className="mt-1 space-y-1">
+                        <p className="text-sm text-gray-600">{application.email}</p>
+                        <p className="text-sm text-gray-600">
+                          ID: <span className="font-medium">{application.userId?._id || 'user'}</span>
+                        </p>
+                      </div>
                     </div>
                     <div className={`inline-flex items-center px-3 py-1 rounded-full ${statusStyle.bg} ${statusStyle.text}`}>
                       <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
