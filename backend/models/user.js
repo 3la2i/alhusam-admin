@@ -18,8 +18,8 @@ const userSchema = new Schema(
     googleId: { type: String },
     facebookId: { type: String },
     isDeleted: { type: Boolean, default: false },
-    isActivated: { type: Boolean, default: false }, // Default to false
-    otp: String, 
+    isActivated: { type: Boolean, default: true }, // Default to false
+    otp: String,
     otpExpiry: Date,
   },
   { timestamps: true }

@@ -9,4 +9,4 @@ router.get('/active', driverAuth, driverOrderController.getActiveOrders);
 router.post('/:orderId/accept', driverAuth, driverOrderController.acceptOrder);
 router.patch('/:orderId/status', driverAuth, driverOrderController.updateOrderStatus);
 
-module.exports = router; 
+module.exports = router;

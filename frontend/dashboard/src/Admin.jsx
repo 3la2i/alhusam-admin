@@ -7,6 +7,8 @@ import Testimonials from './components/Testimonials'
 import Requests from './components/Requests'
 import Overview from './components/Overview'
 import ProviderStats from './components/ProviderStats'
+import AllOrders from './components/AllOrders'
+import AllProducts from './components/AllProducts'
 
 function Admin({ setIsAuthenticated }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
@@ -42,8 +44,8 @@ function Admin({ setIsAuthenticated }) {
       name: 'Overview',
       icon: (
         <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-            d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" 
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+            d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
           />
         </svg>
       ),
@@ -102,13 +104,33 @@ function Admin({ setIsAuthenticated }) {
         </svg>
       ),
     },
+    {
+      id: 'all-order',
+      name: 'All Orders',
+      icon: (
+         <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+         </svg>
+      ),
+   },
+
+   {
+    id: 'all-products',
+    name: 'All products',
+    icon: (
+       <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+       </svg>
+    ),
+ },
+
   ]
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Overlay for mobile */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-gray-900 bg-opacity-50 z-30 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
@@ -127,7 +149,7 @@ function Admin({ setIsAuthenticated }) {
               </svg>
             </button>
           </div>
-          
+
           {/* Sidebar Navigation */}
           <nav className="space-y-2 flex-grow">
             {navigationItems.map((item) => (
@@ -135,8 +157,8 @@ function Admin({ setIsAuthenticated }) {
                 key={item.id}
                 onClick={() => setCurrentPage(item.id)}
                 className={`w-full flex items-center p-2 text-white rounded-lg transition-colors ${
-                  currentPage === item.id 
-                    ? 'bg-primary-700' 
+                  currentPage === item.id
+                    ? 'bg-primary-700'
                     : 'hover:bg-primary-700/50'
                 }`}
               >
@@ -175,7 +197,7 @@ function Admin({ setIsAuthenticated }) {
             <div className="w-6" /> {/* Spacer for alignment */}
           </div>
         </div>
-        
+
         {/* Page Content */}
         <div className="p-4">
           <div className="bg-white rounded-lg shadow">
@@ -186,6 +208,8 @@ function Admin({ setIsAuthenticated }) {
             {currentPage === 'testimonials' && <Testimonials />}
             {currentPage === 'requests' && <Requests />}
             {currentPage === 'provider-stats' && <ProviderStats />}
+            {currentPage === 'all-order' && <AllOrders/>}
+            {currentPage === 'all-products' && <AllProducts/>}
           </div>
         </div>
       </div>

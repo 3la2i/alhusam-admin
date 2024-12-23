@@ -14,10 +14,15 @@ const driverOrderRoutes = require('./routes/driverOrderRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const contactMessageRoutes = require('./routes/contactMessageRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const productsRoute = require('./routes/productsRoute');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const path = require("path");
 
+// Serve the 'uploads' folder as static
+ 
+app.use('/uploads', express.static('uploads'));
 // Middleware
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -42,6 +47,7 @@ app.use('/api/driver/orders', driverOrderRoutes);              // Driver order r
 app.use('/api/admin/requests', requestRoutes);                 // Request routes
 app.use('/api/admin/contact-messages', contactMessageRoutes);
 app.use('/api/admin/dashboard', dashboardRoutes);
+app.use('/api/products', productsRoute);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, { 

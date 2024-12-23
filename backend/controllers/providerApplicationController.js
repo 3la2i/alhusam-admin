@@ -8,7 +8,7 @@ const providerApplicationController = {
       const applications = await ProviderApplication.find()
         .populate('userId', 'username email role')
         .sort({ createdAt: -1 });
-      
+
       res.json(applications);
     } catch (error) {
       console.error('Error fetching applications:', error);
@@ -20,7 +20,7 @@ const providerApplicationController = {
     try {
       const { applicationId } = req.params;
       const { status } = req.body;
-      
+
       const application = await ProviderApplication.findById(applicationId);
       if (!application) {
         return res.status(404).json({ message: 'Application not found' });
@@ -43,13 +43,13 @@ const providerApplicationController = {
           user.role = 'user';
         }
       }
-      
+
       await user.save();
 
       // Return updated application with populated user
       const updatedApplication = await ProviderApplication.findById(applicationId)
         .populate('userId', 'username email role');
-      
+
       res.json(updatedApplication);
     } catch (error) {
       console.error('Error updating application status:', error);
@@ -62,18 +62,18 @@ const providerApplicationController = {
     console.log('Request body:', req.body);
     try {
       const { providerIds } = req.body;
-      
+
       if (!providerIds || !Array.isArray(providerIds)) {
         console.log('Invalid providerIds:', providerIds);
         return res.status(400).json({ message: 'Invalid provider IDs' });
       }
-      
+
       console.log('Searching for products with provider IDs:', providerIds);
       const products = await Product.find({
         seller: { $in: providerIds },
         isDeleted: false
       }).populate('seller', 'username email');
-      
+
       console.log('Found products:', products);
       res.json(products);
     } catch (error) {

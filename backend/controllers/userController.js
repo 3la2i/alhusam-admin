@@ -7,7 +7,7 @@ const userController = {
       const users = await User.find({ isDeleted: false })
         .select('-password -otp -otpExpiry')
         .sort({ createdAt: -1 });
-      
+
       res.json(users);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -19,7 +19,7 @@ const userController = {
   toggleUserStatus: async (req, res) => {
     try {
       const { userId } = req.params;
-      
+
       const user = await User.findById(userId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -42,10 +42,10 @@ const userController = {
   getUserById: async (req, res) => {
     try {
       const { userId } = req.params;
-      
+
       const user = await User.findById(userId)
         .select('-password -otp -otpExpiry');
-      
+
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
@@ -62,9 +62,9 @@ const userController = {
     try {
       const { userId } = req.params;
       const { role } = req.body;
-      
+
       console.log(`Updating user ${userId} to role ${role}`);
-      
+
       // Validate role
       const validRoles = ['user', 'provider', 'driver', 'admin'];
       if (!validRoles.includes(role)) {

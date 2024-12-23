@@ -23,6 +23,11 @@ const requestSchema = new mongoose.Schema({
   resume: {
     type: String, // URL to uploaded resume/file
   },
+     userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
   status: {
     type: String,
     enum: ['pending', 'reviewed', 'completed'],
@@ -34,6 +39,5 @@ const requestSchema = new mongoose.Schema({
   }
 });
 
-const Request = mongoose.model("Request", requestSchema);
-
-module.exports = Request; 
+// const Request = mongoose.model("Request", requestSchema);
+module.exports = mongoose.models.Request || mongoose.model("Request", requestSchema);

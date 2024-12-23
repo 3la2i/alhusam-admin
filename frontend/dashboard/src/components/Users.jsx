@@ -88,7 +88,8 @@ function Users() {
 
   const filteredUsers = users.filter(user => 
     user.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email?.toLowerCase().includes(searchTerm.toLowerCase())
+    user.email?.toLowerCase().includes(searchTerm.toLowerCase())||
+    user._id?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   if (loading) return (
@@ -145,6 +146,7 @@ function Users() {
         <table className="min-w-full divide-y divide-gray-100">
           <thead className="bg-gray-50">
             <tr>
+              <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
               <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
               <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
               <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
@@ -156,6 +158,10 @@ function Users() {
           <tbody className="divide-y divide-gray-100 bg-white">
             {filteredUsers.map((user) => (
               <tr key={user._id} className="hover:bg-gray-50/50 transition-colors">
+
+<td className="px-6 py-4 whitespace-nowrap text-right">
+                  <div className="text-sm font-medium text-gray-900">{user._id}</div>
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right">
                   <div className="text-sm font-medium text-gray-900">{user.username}</div>
                 </td>

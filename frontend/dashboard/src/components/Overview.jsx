@@ -159,99 +159,23 @@ function Overview() {
         <div className="bg-white p-6 rounded-xl shadow-soft border border-gray-100">
           <h3 className="text-lg font-medium text-gray-900 mb-4">Products by Category</h3>
           <div className="h-[300px] flex items-center justify-center">
-            <Bar 
-              data={productCategoryChartData} 
-              options={{ 
+            <Bar
+              data={productCategoryChartData}
+              options={{
                 maintainAspectRatio: false,
                 scales: {
                   y: {
                     beginAtZero: true
                   }
                 }
-              }} 
+              }}
             />
           </div>
         </div>
       </div>
 
-      {/* Recent Orders */}
-      <div className="bg-white p-6 rounded-xl shadow-soft border border-gray-100">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Orders</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Provider</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Driver</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Platform Profit</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Provider Profit</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delivery Status</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {stats.recentOrders.map((order) => (
-                <tr key={order._id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    #{order._id.slice(-6)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.user.username}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.provider.fullName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.driver ? (
-                      <span className="text-green-600">{order.driver.username}</span>
-                    ) : (
-                      <span className="text-gray-400">No driver assigned</span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${order.total}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <span className="text-blue-600">${order.platformProfit}</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <span className="text-green-600">${order.providerProfit}</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      order.providerStatus === 'ready' 
-                        ? 'bg-green-100 text-green-800' 
-                        : order.providerStatus === 'preparing'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {order.providerStatus}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      order.driverStatus === 'delivered' 
-                        ? 'bg-green-100 text-green-800'
-                        : order.driverStatus === 'on the way'
-                        ? 'bg-blue-100 text-blue-800'
-                        : order.driverStatus === 'accepted'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {order.driverStatus}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   );
 }
 
-export default Overview; 
+export default Overview;

@@ -105,4 +105,4 @@ function Login({ setIsAuthenticated, setUserRole }) {
   );
 }
 
-export default Login; 
+export default Login;
